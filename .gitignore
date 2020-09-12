@@ -1,0 +1,21 @@
+# Ignore Gradle project-specific cache directory
+.gradle
+
+# Ignore Gradle build output directory
+build
+
+# Idea directory
+.idea
+
+# Gradle directory
+gradle
+
+# Eclipse directories
+.classpath
+.metadata
+.project
+.settings
+bin
+
+docs/.~lock.*
+
