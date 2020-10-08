@@ -3,11 +3,10 @@
  */
 package com.thales.parkingrent;
 
-import com.google.common.collect.ImmutableSet;
 import com.thales.parkingrent.entities.parking.ParkingManager;
-import com.thales.parkingrent.entities.parking.ExhibitionStand;
 import com.thales.parkingrent.entities.parking.ParkingSize;
 import com.thales.parkingrent.entities.parking.ParkingSpace;
+import com.thales.parkingrent.entities.parking.ParkingUsage;
 import com.thales.parkingrent.entities.vehicles.Vehicle;
 import com.thales.parkingrent.gui.ParkingRentFrame;
 import com.thales.parkingrent.strategy.PricingStrategy;
@@ -24,8 +23,6 @@ public class App {
 
     public static void main(String[] args) {
         ParkingRentFrame.main(args);
-//        ExhibitionStand exhibitionStand = new ExhibitionStand(ParkingSize.SMALL, Vehicle.Value.CHEAP);
-//        instance.parkingManager.computePrice(exhibitionStand);
     }
 
     public App() {
@@ -53,8 +50,8 @@ public class App {
         return parkingManager;
     }
     
-    public ImmutableSet<String> getAllUsages() {
-        return ImmutableSet.of("Car", "Truck", "Motorcycle", "ExhibitionStand");
+    public Set<String> getAllUsages() {
+        return Arrays.stream(ParkingUsage.Type.values()).map(ParkingUsage.Type::getDisplayName).collect(Collectors.toSet());
     }
     
     public Set<String> getExhibitionStandSizes() {

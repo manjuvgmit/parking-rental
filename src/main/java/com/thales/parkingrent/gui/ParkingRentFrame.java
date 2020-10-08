@@ -13,7 +13,8 @@ import com.thales.parkingrent.entities.vehicles.Car;
 import com.thales.parkingrent.entities.vehicles.Motorcycle;
 import com.thales.parkingrent.entities.vehicles.Truck;
 import com.thales.parkingrent.entities.vehicles.Vehicle;
-import java.awt.Component;
+
+import java.awt.*;
 import java.util.Objects;
 
 /**
@@ -37,6 +38,9 @@ public class ParkingRentFrame extends javax.swing.JFrame {
     private void disablePanels() {
         disableComponents(kilometerDetailsPanel.getComponents());
         disableComponents(exhibitionStandDetailsPanel.getComponents());
+        kilometerDetailsPanel.setVisible(false);
+        exhibitionStandDetailsPanel.setVisible(false);
+        enableDisableComputeAndResultPanel(false);
     }
 
     private void disableComponents(Component[] components) {
@@ -68,21 +72,34 @@ public class ParkingRentFrame extends javax.swing.JFrame {
         app.getValueOfExhibitionItem().forEach(usage -> usageComboBox.addItem(usage));
     }
 
+    private void enableDisableComputeAndResultPanel(boolean value) {
+        pricingButtonPanel.setVisible(value);
+        resultPanel.setVisible(value);
+    }
+
     private void handleUsageSelection(String selectedValue) {
         if (app.getAllUsages().contains(selectedValue)) {
+            enableDisableComputeAndResultPanel(true);
             if (EXHIBITION_STAND.equals(selectedValue)) {
                 disableComponents(kilometerDetailsPanel.getComponents());
                 enableComponents(exhibitionStandDetailsPanel.getComponents());
                 resultTextArea.setText("");
+                kilometerDetailsPanel.setVisible(false);
+                exhibitionStandDetailsPanel.setVisible(true);
             } else {
                 disableComponents(exhibitionStandDetailsPanel.getComponents());
                 enableComponents(kilometerDetailsPanel.getComponents());
                 resultTextArea.setText("");
+                kilometerDetailsPanel.setVisible(true);
+                exhibitionStandDetailsPanel.setVisible(false);
             }
         } else {
             disableComponents(kilometerDetailsPanel.getComponents());
             disableComponents(exhibitionStandDetailsPanel.getComponents());
             resultTextArea.setText("");
+            kilometerDetailsPanel.setVisible(false);
+            exhibitionStandDetailsPanel.setVisible(false);
+            enableDisableComputeAndResultPanel(false);
         }
     }
 
@@ -107,14 +124,14 @@ public class ParkingRentFrame extends javax.swing.JFrame {
     private void computeParkingPriceAndShowTheResult(String usage) {
         int kilometers = Integer.parseInt(carKilometerTextField.getText());
         ParkingUsage parkingUsage = null;
-        switch (usage) {
-            case "Car":
+        switch (ParkingUsage.Type.valueOf(usage)) {
+            case CAR:
                 parkingUsage = new Car(kilometers);
                 break;
-            case "Truck":
+            case TRUCK:
                 parkingUsage = new Truck(kilometers);
                 break;
-            case "Motorcycle":
+            case MOTORCYCLE:
                 parkingUsage = new Motorcycle(kilometers);
                 break;
             default:
